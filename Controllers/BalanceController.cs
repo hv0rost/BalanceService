@@ -17,7 +17,7 @@ namespace BalanceService.Controllers
         [HttpGet]
         [Route("balance")]
 
-        public IActionResult Get()
+        public IActionResult GetBalance()
         {
             responseType type = responseType.Succes;
             try
@@ -42,7 +42,7 @@ namespace BalanceService.Controllers
         // GET api/<BalanceController>/5
         [HttpGet]
         [Route("balance/{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetBalanceById(int id)
         {
             responseType type = responseType.Succes;
             try
@@ -67,7 +67,7 @@ namespace BalanceService.Controllers
         [HttpPost]
         [Route("balance/create")]
 
-        public IActionResult Post([FromBody] Balance value)
+        public IActionResult CreateNewBalance([FromBody] Balance value)
         {
             responseType type = responseType.Succes;
             try
@@ -85,12 +85,12 @@ namespace BalanceService.Controllers
         // PUT api/<BalanceController>/5
         [HttpPut]
         [Route("balance/depositeMoney")]
-        public IActionResult Put([FromBody] Balance value)
+        public IActionResult DepositeMoney([FromBody] Balance value)
         {
             responseType type = responseType.Succes;
             try
             {
-                _db.MutateBalance(value);
+                _db.MutateBalance(value, true);
                 return Ok(ResponseHandler.GetAppResponse(type, value));
             }
             catch (Exception ex)
@@ -100,10 +100,38 @@ namespace BalanceService.Controllers
             }
         }
 
-        // DELETE api/<BalanceController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPut]
+        [Route("balance/chargeMoney")]
+        public IActionResult ChargeMoney([FromBody] Balance value)
         {
+            responseType type = responseType.Succes;
+            try
+            {
+                type = _db.MutateBalance(value, false);
+                return Ok(ResponseHandler.GetAppResponse(type, value));
+            }
+            catch (Exception ex)
+            {
+                type = responseType.Failure;
+                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("balance/transferMoney")]
+        public IActionResult TransferMoney([FromBody] TransferBalance transferData)
+        {
+            responseType type = responseType.Succes;
+            try
+            {
+                type = _db.TransferBetweenBankAccount(transferData);
+                return Ok(ResponseHandler.GetAppResponse(type, transferData));
+            }
+            catch (Exception ex)
+            {
+                type = responseType.Failure;
+                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+            }
         }
     }
 }

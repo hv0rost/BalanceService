@@ -5,7 +5,6 @@
         public static ApiResponse GetExceptionResponse(Exception ex)
         {
             ApiResponse response = new ApiResponse();
-            response.Code = 1;
             response.ResponseData = ex.Message;
             return response;
         }
@@ -18,12 +17,14 @@
             switch (type)
             {
                 case responseType.Succes:
-                    response.Code = 0;
-                    response.Message = "Success";
+                    response.Message = "Успешно";
+                    break;
+                case responseType.NotEnoghMoney:
+                    response.Message = "Недостаточно средств для списания";
+                    response.ResponseData = null;
                     break;
                 case responseType.NotFound:
-                    response.Code = 2;
-                    response.Message = "No record available";
+                    response.Message = "Запись не найдена";
                     break;
             }
             return response;
