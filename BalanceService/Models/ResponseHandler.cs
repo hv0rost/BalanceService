@@ -31,6 +31,9 @@
                     response.Message = "Введены не корректные данные";
                     response.ResponseData = null;
                     break;
+                case responseType.Created:
+                    response.Message = "Успешно создан новый баланс";
+                    break;
             }
             return response;
         }

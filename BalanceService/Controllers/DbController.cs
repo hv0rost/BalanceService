@@ -1,8 +1,10 @@
 ﻿using Humanizer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RabbitMQ.Client;
 using System.Data;
 using System.Net;
+using System.Text;
 
 namespace BalanceService.Models
 {
@@ -55,7 +57,6 @@ namespace BalanceService.Models
                 id = row.id,
                 balance = row.balance * rate
             }));
-
             return response;
         }
 
@@ -69,6 +70,7 @@ namespace BalanceService.Models
                 id = dataList.id,
                 balance = dataList.balance * rate
             };
+            SendNewMessage(id, "Просмотр баланса");
         }
 
         public responseType MutateBalance(Balance balance, bool deposite)
@@ -80,6 +82,7 @@ namespace BalanceService.Models
                 {
                     dbTable.balance += balance.balance;
                     SetNewTransferHistory(dbTable.id, "Пополнение счета", balance.balance);
+                    SendNewMessage(dbTable.id, "Пополнение счета");
                     _context.balance.Update(dbTable);
                 }
                 else if (dbTable != null)
@@ -90,9 +93,19 @@ namespace BalanceService.Models
                         return responseType.NotEnoghMoney;
                     }
                     SetNewTransferHistory(dbTable.id, "Списание с счета", balance.balance);
+                    SendNewMessage(dbTable.id, "Списание с счета");
                     _context.balance.Update(dbTable);
 
                 }
+                else if (dbTable == null && deposite)
+                {
+                    CreateBalance(balance);
+                    SendNewMessage(balance.id, "Пополнение счета");
+                    return responseType.Created;
+                }
+                else if (dbTable == null && !deposite)
+                    return responseType.BadData;
+
                 _context.SaveChanges();
                 return responseType.Succes;
             }
@@ -128,17 +141,18 @@ namespace BalanceService.Models
                 SetNewTransferHistory(dbTable[from].id, $"Перевод клиенту с id - {dbTable[to].id}", value.moneyAmount);
                 SetNewTransferHistory(dbTable[to].id, $"Перевод от клиента с id - {dbTable[from].id}", value.moneyAmount);
 
+
                 return responseType.Succes;
             }
             return responseType.BadData;
         }
 
-        public void CreateBalance()
+        public void CreateBalance(Balance balance)
         {
             Balance dbTable = new Balance();
 
-            dbTable.id = (_context.balance.Max(d => (int?)d.id) ?? 0) + 1;
-            dbTable.balance = 0;
+            dbTable.id = balance.id;
+            dbTable.balance = balance.balance;
 
             _context.balance.Add(dbTable);
             _context.SaveChanges();
@@ -161,8 +175,8 @@ namespace BalanceService.Models
                 date = row.date,
                 description = row.description,
                 balanceId = row.balanceId,
-            }));           
-            
+            }));
+            SendNewMessage(id, "Просмотр транзакций");
             try
             {
                 int pagination = Int32.Parse(page);
@@ -189,8 +203,35 @@ namespace BalanceService.Models
             newTransfer.balanceId = id;
 
             _context.history.Add(newTransfer);
+            SendNewMessage(id, description);
             _context.SaveChanges();
         }
 
+        public void SendNewMessage(int id, string message)
+        {
+            var factory = new ConnectionFactory() { HostName = "localhost"};
+            using (var connection = factory.CreateConnection())
+            {
+                using (var channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(
+                        queue: $"{id}",
+                        exclusive: false,
+                        durable: true,
+                        autoDelete: false,
+                        arguments: null
+                        );
+
+                    var body = Encoding.UTF8.GetBytes(message);
+
+                    channel.BasicPublish(
+                        exchange: "",
+                        routingKey: $"{id}",
+                        basicProperties: null,
+                        body: body
+                        );
+                }
+            }
+        }
     }
 }

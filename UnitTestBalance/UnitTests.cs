@@ -52,17 +52,6 @@ namespace UnitTestBalance
         }
 
         [Fact]
-        public void CreateNewBalance()
-        {
-            DataContext context = new DataContext(dbContextOptions);
-            BalanceController controller = new BalanceController(context);
-
-            var data = controller.CreateNewBalance();
-
-            Assert.IsType<OkObjectResult>(data);
-        }
-
-        [Fact]
         public void TransferMoney()
         {
             DataContext context = new DataContext(dbContextOptions);

@@ -12,6 +12,7 @@
         NotFound,
         Failure,
         NotEnoghMoney,
-        BadData
+        BadData,
+        Created
     }
 }

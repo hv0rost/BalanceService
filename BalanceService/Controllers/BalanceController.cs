@@ -11,7 +11,7 @@ namespace BalanceService.Controllers
         {
             _db = new DbController(dataContext);
         }
-        // GET: api/<BalanceController>
+
         [HttpGet]
         [Route("balance")]
 
@@ -37,7 +37,6 @@ namespace BalanceService.Controllers
 
         }
 
-        // GET api/<BalanceController>/5
         [HttpGet]
         [Route("balance/{id}")]
         public IActionResult GetBalanceById(int id, [FromQuery(Name = "currency")] string? currency)
@@ -61,27 +60,6 @@ namespace BalanceService.Controllers
             }
         }
 
-        // POST api/<BalanceController>
-        [HttpPost]
-        [Route("balance/create")]
-
-        public IActionResult CreateNewBalance()
-        {
-            responseType type = responseType.Succes;
-            Balance value = new Balance();
-            try
-            {
-                _db.CreateBalance();
-                return Ok(ResponseHandler.GetAppResponse(type, value));
-            }
-            catch (Exception ex)
-            {
-                type = responseType.Failure;
-                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
-            }
-        }
-
-        // PUT api/<BalanceController>/5
         [HttpPut]
         [Route("balance/depositeMoney")]
         public IActionResult DepositeMoney([FromBody] Balance value)
