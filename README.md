@@ -47,7 +47,9 @@
 ```
 
 **to** - на какой счет
+
 **from** - с какого счета
+
 **moneyAmount** - количество денег
 
 **http://localhost:5100/transferHistory/{id}/?sortBy=moneyAmount&page=2** - просмотр транзакций пользователя имеет необязательный query параметр **sortBy={date\moneyAmount}**, 
