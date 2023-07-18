@@ -7,6 +7,6 @@ namespace BalanceService.Models
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         public DbSet<Balance> balance { get; set; }
-        //public DbSet<TransferHistory> history { get; set; }    
+        public DbSet<TransferHistory> history { get; set; }    
     }
 }

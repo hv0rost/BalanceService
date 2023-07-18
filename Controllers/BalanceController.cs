@@ -65,12 +65,13 @@ namespace BalanceService.Controllers
         [HttpPost]
         [Route("balance/create")]
 
-        public IActionResult CreateNewBalance([FromBody] Balance value)
+        public IActionResult CreateNewBalance()
         {
             responseType type = responseType.Succes;
+            Balance value = new Balance();
             try
             {
-                _db.CreateBalance(value);
+                _db.CreateBalance();
                 return Ok(ResponseHandler.GetAppResponse(type, value));
             }
             catch (Exception ex)
@@ -124,6 +125,29 @@ namespace BalanceService.Controllers
             {
                 type = _db.TransferBetweenBankAccount(transferData);
                 return Ok(ResponseHandler.GetAppResponse(type, transferData));
+            }
+            catch (Exception ex)
+            {
+                type = responseType.Failure;
+                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("transferHistory/{id}")]
+        public IActionResult GetTransferHistory(int id, [FromQuery(Name = "sortBy")] string? sortBy, [FromQuery(Name = "page")] string? page)
+        {
+            responseType type = responseType.Succes;
+            try
+            {
+                List<TransferHistory> data = _db.GetTransferHistory(id, sortBy, page);
+
+                if (data == null)
+                {
+                    type = responseType.NotFound;
+                    return NotFound(ResponseHandler.GetAppResponse(type, data));
+                }
+                return Ok(ResponseHandler.GetAppResponse(type, data));
             }
             catch (Exception ex)
             {
