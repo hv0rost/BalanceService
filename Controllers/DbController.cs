@@ -1,42 +1,76 @@
-﻿using System.Data;
+﻿using Newtonsoft.Json;
+using System.Data;
+using System.Net;
 
 namespace BalanceService.Models
 {
+    public class CurencyExchange
+    {
+        public Dictionary<string, double>? rates { get; set; }
+    }
+
     public class DbController
     {
-        private BalanceContext _context;
-        public DbController(BalanceContext context)
+        private DataContext _context;
+        public DbController(DataContext context)
         {
             _context = context;
         }
 
-        public List<Balance> GetBalances()
+        public double getCurrencyExchange(string? currency)
         {
+            HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create(string.Format("https://www.cbr-xml-daily.ru/latest.js"));
+
+            WebReq.Method = "GET";
+
+            HttpWebResponse WebResp = (HttpWebResponse)WebReq.GetResponse();
+
+            string jsonString;
+            using (Stream stream = WebResp.GetResponseStream())   
+            {
+                StreamReader reader = new StreamReader(stream, System.Text.Encoding.UTF8);
+                jsonString = reader.ReadToEnd();
+            }
+            CurencyExchange rate = JsonConvert.DeserializeObject<CurencyExchange>(jsonString);
+            try
+            {
+                return rate.rates[currency];
+            }
+            catch (Exception)
+            {
+                return 1;
+            }
+        }
+
+        public List<Balance> GetBalances(string? currency)
+        {
+            double rate = getCurrencyExchange(currency);
+
             List<Balance> response = new List<Balance>();
             var dataList = _context.balance.ToList();
             dataList.ForEach(row => response.Add(new Balance()
             {
                 id = row.id,
-                balance = row.balance
+                balance = row.balance * rate
             }));
 
             return response;
         }
 
-        public Balance GetBalance(int id)
+        public Balance GetBalance(int id, string? currency)
         {
             var dataList = _context.balance.Where(data => data.id.Equals(id)).FirstOrDefault();
+            double rate = getCurrencyExchange(currency);
 
             return new Balance()
             {
                 id = dataList.id,
-                balance = dataList.balance
+                balance = dataList.balance * rate
             };
         }
 
         public responseType MutateBalance(Balance balance, bool deposite)
         {
-            //Balance dbTable = new Balance();
             if (balance.id > 0)
             {
                 var dbTable = _context.balance.Where(data => data.id.Equals(balance.id)).FirstOrDefault();
@@ -45,19 +79,20 @@ namespace BalanceService.Models
                     dbTable.balance += balance.balance;
                     _context.balance.Update(dbTable);
                 }
-                else if (dbTable != null) {
+                else if (dbTable != null)
+                {
                     dbTable.balance -= balance.balance;
                     if (dbTable.balance < 0)
                     {
                         return responseType.NotEnoghMoney;
                     }
                     _context.balance.Update(dbTable);
-                    
+
                 }
                 _context.SaveChanges();
                 return responseType.Succes;
             }
-            return responseType.NotFound;
+            return responseType.BadData;
         }
 
         public responseType TransferBetweenBankAccount(TransferBalance value)
@@ -84,7 +119,7 @@ namespace BalanceService.Models
                 _context.SaveChanges();
                 return responseType.Succes;
             }
-            return responseType.NotFound;
+            return responseType.BadData;
         }
 
         public void CreateBalance(Balance balance)
@@ -98,16 +133,16 @@ namespace BalanceService.Models
             _context.SaveChanges();
         }
 
-/*        public void DeleteBalance(int id)
-        {
-            var balance = _context.balance.Where(d => d.id.Equals(id)).FirstOrDefault();
+        /*        public void DeleteBalance(int id)
+                {
+                    var balance = _context.balance.Where(d => d.id.Equals(id)).FirstOrDefault();
 
-            if (balance != null)
-            {
-                _context.balance.Remove(balance);
-                _context.SaveChanges();
-            }
-        }*/
-        
+                    if (balance != null)
+                    {
+                        _context.balance.Remove(balance);
+                        _context.SaveChanges();
+                    }
+                }*/
+
     }
 }

@@ -25,6 +25,11 @@
                     break;
                 case responseType.NotFound:
                     response.Message = "Запись не найдена";
+                    response.ResponseData = null;
+                    break;
+                case responseType.BadData:
+                    response.Message = "Введены не корректные данные";
+                    response.ResponseData = null;
                     break;
             }
             return response;

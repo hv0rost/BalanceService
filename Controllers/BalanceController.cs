@@ -1,29 +1,27 @@
 ﻿using BalanceService.Models;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace BalanceService.Controllers
 {
     [ApiController]
     public class BalanceController : ControllerBase
     {
         private readonly DbController _db;
-        public BalanceController(BalanceContext balanceContext)
+        public BalanceController(DataContext dataContext)
         {
-            _db = new DbController(balanceContext);
+            _db = new DbController(dataContext);
         }
         // GET: api/<BalanceController>
         [HttpGet]
         [Route("balance")]
 
-        public IActionResult GetBalance()
+        public IActionResult GetBalance([FromQuery(Name = "currency")] string? currency)
         {
             responseType type = responseType.Succes;
             try
             {
-                IEnumerable<Balance> data = _db.GetBalances();
-               
+                IEnumerable<Balance> data = _db.GetBalances(currency);
+
                 if (!data.Any())
                 {
                     type = responseType.NotFound;
@@ -42,12 +40,12 @@ namespace BalanceService.Controllers
         // GET api/<BalanceController>/5
         [HttpGet]
         [Route("balance/{id}")]
-        public IActionResult GetBalanceById(int id)
+        public IActionResult GetBalanceById(int id, [FromQuery(Name = "currency")] string? currency)
         {
             responseType type = responseType.Succes;
             try
             {
-                Balance data = _db.GetBalance(id);
+                Balance data = _db.GetBalance(id, currency);
 
                 if (data == null)
                 {
