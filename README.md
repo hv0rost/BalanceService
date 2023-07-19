@@ -9,11 +9,11 @@
 
 ## Маршруты
 
-**http://localhost:5100/balance/{id}** имеет необязательный query параметр **currency=USD**, где USD - аббревиатура выводимой валюты
+**GET http://localhost:5100/balance/{id}** имеет необязательный query параметр **currency=USD**, где USD - аббревиатура выводимой валюты
 Также возможны варианты - **AUD, AZN, GBP, AMD, BYN, BGN, BRL, EUR и т.д**.
 Также можно указать **id** для вывода счета определенного пользователя.
 
-**http://localhost:5100/balance/depositeMoney** - зачисляет деньги на счет.
+**PUT http://localhost:5100/balance/depositeMoney** - зачисляет деньги на счет.
 Тело запроса:
 
 ```
@@ -25,7 +25,7 @@
 
 Если указанного id, не существует - создает нового пользователя и зачисляет ему на счет указанную сумму денег. 
 
-**http://localhost:5100/balance/chargeMoney** - списывает деньги со счета.
+**PUT http://localhost:5100/balance/chargeMoney** - списывает деньги со счета.
 Тело запроса:
 
 ```
@@ -35,7 +35,7 @@
 }
 ```
 
-**http://localhost:5100/balance/transferMoney** - перевод средств с одного счета на другой.
+**PUT http://localhost:5100/balance/transferMoney** - перевод средств с одного счета на другой.
 Тело запроса:
 
 ```
@@ -52,7 +52,7 @@
 
 **moneyAmount** - количество денег
 
-**http://localhost:5100/transferHistory/{id}/?sortBy=moneyAmount&page=2** - просмотр транзакций пользователя имеет необязательный query параметр **sortBy={date\moneyAmount}**, 
+**GET http://localhost:5100/transferHistory/{id}/?sortBy=moneyAmount&page=2** - просмотр транзакций пользователя имеет необязательный query параметр **sortBy={date\moneyAmount}**, 
 где **date** - сортировка по дате транзакции, а **moneyAmount** - сортировка по величине средств, которые фигурируют в транзакции.
 Второй query параметр **page={номер страницы}** для пагинации по данным. Без указания параметра **page** выводятся все записи. При указании 5 штук на страницу.
 Параметр **id** обязательный.
