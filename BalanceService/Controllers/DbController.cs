@@ -107,7 +107,7 @@ namespace BalanceService.Models
                     return responseType.BadData;
 
                 _context.SaveChanges();
-                return responseType.Succes;
+                return responseType.Success;
             }
             return responseType.BadData;
         }
@@ -120,12 +120,11 @@ namespace BalanceService.Models
                     .Union(_context.balance.Where(data => data.id.Equals(value.to))).ToList();
                 int to, from;
 
-                to = dbTable.FindIndex(d => d.id == value.to);
-                Console.WriteLine(to);
-                from = dbTable.FindIndex(d => d.id == value.from);
-
-                if (dbTable[to] != null && dbTable[from] != null)
+                if (dbTable.ElementAtOrDefault(0) != null && dbTable.ElementAtOrDefault(1) != null)
                 {
+                    to = dbTable.FindIndex(d => d.id == value.to);
+                    from = dbTable.FindIndex(d => d.id == value.from);
+
                     dbTable[to].balance += value.moneyAmount;
                     dbTable[from].balance -= value.moneyAmount;
     
@@ -133,16 +132,17 @@ namespace BalanceService.Models
                     {
                         return responseType.NotEnoghMoney;
                     }
+
+                    _context.balance.Update(dbTable[to]);
+                    _context.balance.Update(dbTable[from]);
+                    _context.SaveChanges();
+
+                    SetNewTransferHistory(dbTable[from].id, $"Перевод клиенту с id - {dbTable[to].id}", value.moneyAmount);
+                    SetNewTransferHistory(dbTable[to].id, $"Перевод от клиента с id - {dbTable[from].id}", value.moneyAmount);
+
+                    return responseType.Success;
                 }
-                _context.balance.Update(dbTable[to]);
-                _context.balance.Update(dbTable[from]);
-                _context.SaveChanges();
-
-                SetNewTransferHistory(dbTable[from].id, $"Перевод клиенту с id - {dbTable[to].id}", value.moneyAmount);
-                SetNewTransferHistory(dbTable[to].id, $"Перевод от клиента с id - {dbTable[from].id}", value.moneyAmount);
-
-
-                return responseType.Succes;
+                return responseType.BadData;
             }
             return responseType.BadData;
         }

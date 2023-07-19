@@ -16,7 +16,7 @@
 
             switch (type)
             {
-                case responseType.Succes:
+                case responseType.Success:
                     response.Message = "Успешно";
                     break;
                 case responseType.NotEnoghMoney:

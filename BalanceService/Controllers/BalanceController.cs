@@ -17,7 +17,7 @@ namespace BalanceService.Controllers
 
         public IActionResult GetBalance([FromQuery(Name = "currency")] string? currency)
         {
-            responseType type = responseType.Succes;
+            responseType type = responseType.Success;
             try
             {
                 IEnumerable<Balance> data = _db.GetBalances(currency);
@@ -41,7 +41,7 @@ namespace BalanceService.Controllers
         [Route("balance/{id}")]
         public IActionResult GetBalanceById(int id, [FromQuery(Name = "currency")] string? currency)
         {
-            responseType type = responseType.Succes;
+            responseType type = responseType.Success;
             try
             {
                 Balance data = _db.GetBalance(id, currency);
@@ -64,7 +64,7 @@ namespace BalanceService.Controllers
         [Route("balance/depositeMoney")]
         public IActionResult DepositeMoney([FromBody] Balance value)
         {
-            responseType type = responseType.Succes;
+            responseType type = responseType.Success;
             try
             {
                 _db.MutateBalance(value, true);
@@ -81,7 +81,7 @@ namespace BalanceService.Controllers
         [Route("balance/chargeMoney")]
         public IActionResult ChargeMoney([FromBody] Balance value)
         {
-            responseType type = responseType.Succes;
+            responseType type = responseType.Success;
             try
             {
                 type = _db.MutateBalance(value, false);
@@ -98,7 +98,7 @@ namespace BalanceService.Controllers
         [Route("balance/transferMoney")]
         public IActionResult TransferMoney([FromBody] TransferBalance transferData)
         {
-            responseType type = responseType.Succes;
+            responseType type = responseType.Success;
             try
             {
                 type = _db.TransferBetweenBankAccount(transferData);
@@ -115,7 +115,7 @@ namespace BalanceService.Controllers
         [Route("transferHistory/{id}")]
         public IActionResult GetTransferHistory(int id, [FromQuery(Name = "sortBy")] string? sortBy, [FromQuery(Name = "page")] string? page)
         {
-            responseType type = responseType.Succes;
+            responseType type = responseType.Success;
             try
             {
                 List<TransferHistory> data = _db.GetTransferHistory(id, sortBy, page);

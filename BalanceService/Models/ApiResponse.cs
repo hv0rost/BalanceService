@@ -8,7 +8,7 @@
 
     public enum responseType
     {
-        Succes,
+        Success,
         NotFound,
         Failure,
         NotEnoghMoney,
