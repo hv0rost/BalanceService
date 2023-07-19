@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hv0rost\\Desktop\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj": {}
+    "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hv0rost\\Desktop\\BalanceService\\BalanceService\\BalanceService.csproj": {
+    "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\BalanceService\\BalanceService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hv0rost\\Desktop\\BalanceService\\BalanceService\\BalanceService.csproj",
+        "projectUniqueName": "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\BalanceService\\BalanceService.csproj",
         "projectName": "BalanceService",
-        "projectPath": "C:\\Users\\hv0rost\\Desktop\\BalanceService\\BalanceService\\BalanceService.csproj",
+        "projectPath": "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\BalanceService\\BalanceService.csproj",
         "packagesPath": "C:\\Users\\hv0rost\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hv0rost\\Desktop\\BalanceService\\BalanceService\\obj\\",
+        "outputPath": "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\BalanceService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -90,14 +90,14 @@
         }
       }
     },
-    "C:\\Users\\hv0rost\\Desktop\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj": {
+    "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hv0rost\\Desktop\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj",
+        "projectUniqueName": "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj",
         "projectName": "UnitTestBalance",
-        "projectPath": "C:\\Users\\hv0rost\\Desktop\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj",
+        "projectPath": "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj",
         "packagesPath": "C:\\Users\\hv0rost\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hv0rost\\Desktop\\BalanceService\\UnitTestBalance\\obj\\",
+        "outputPath": "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\UnitTestBalance\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -118,8 +118,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\hv0rost\\Desktop\\BalanceService\\BalanceService\\BalanceService.csproj": {
-                "projectPath": "C:\\Users\\hv0rost\\Desktop\\BalanceService\\BalanceService\\BalanceService.csproj"
+              "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\BalanceService\\BalanceService.csproj": {
+                "projectPath": "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\BalanceService\\BalanceService.csproj"
               }
             }
           }

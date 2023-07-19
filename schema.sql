@@ -1,5 +1,5 @@
 //drop database bank ;
-//CREATE database bank ;
+CREATE database bank ;
 
 CREATE TABLE IF NOT EXISTS public.balance
 (

@@ -209,29 +209,37 @@ namespace BalanceService.Models
 
         public void SendNewMessage(int id, string message)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost"};
-            using (var connection = factory.CreateConnection())
+            try
             {
-                using (var channel = connection.CreateModel())
+                var factory = new ConnectionFactory() { HostName = "localhost" };
+                using (var connection = factory.CreateConnection())
                 {
-                    channel.QueueDeclare(
-                        queue: $"{id}",
-                        exclusive: false,
-                        durable: true,
-                        autoDelete: false,
-                        arguments: null
-                        );
+                    using (var channel = connection.CreateModel())
+                    {
+                        channel.QueueDeclare(
+                            queue: $"{id}",
+                            exclusive: false,
+                            durable: true,
+                            autoDelete: false,
+                            arguments: null
+                            );
 
-                    var body = Encoding.UTF8.GetBytes(message);
+                        var body = Encoding.UTF8.GetBytes(message);
 
-                    channel.BasicPublish(
-                        exchange: "",
-                        routingKey: $"{id}",
-                        basicProperties: null,
-                        body: body
-                        );
+                        channel.BasicPublish(
+                            exchange: "",
+                            routingKey: $"{id}",
+                            basicProperties: null,
+                            body: body
+                            );
+                    }
                 }
             }
+            catch (Exception)
+            {
+                Console.WriteLine("Rabbit dosen't congigured well");
+            }
+
         }
     }
 }

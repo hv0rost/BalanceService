@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JWR8dFrHkPA91uXRhAcnOhRI6hefbP2TEWO7++HcxUSa2AHO95RShJGKSA5SAA4Rw3SFyfwJxWxhc9ETGnXG6A==",
+  "dgSpecHash": "g+H7bdJiCpJmKi4xgKlizrJ+2d2NBIZjQo0OFHYvTG8AfebZ/yawMUKsaXv+zf7bP+zPK1STbBtuBrl+Qqwviw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\hv0rost\\Desktop\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj",
+  "projectFilePath": "C:\\Users\\hv0rost\\Desktop\\Development\\BalanceService\\UnitTestBalance\\UnitTestBalance.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hv0rost\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\hv0rost\\.nuget\\packages\\coverlet.collector\\3.1.2\\coverlet.collector.3.1.2.nupkg.sha512",
