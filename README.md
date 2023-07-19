@@ -3,7 +3,7 @@
 ## Для запуска приложения необходимо сделать набор действий:
 1. Зайти в **BalanceService/BalanceService/appsettings.json** и изменить строку для подключения к БД на актуальную;
 2. Открыть скрипт **schema.sql** и создать новую БД;
-3. В файле **BalanceService/BalanceService/Controllers/DbController.cs** изменить адрес RabbitMQ по необходимости (212 строка). **Без работающего контейнера RabbitMQ севрер отвечает на запросы дольше, тк пытается подулючиться к Rabbit**;
+3. В файле **BalanceService/BalanceService/Controllers/DbController.cs** изменить адрес RabbitMQ по необходимости (212 строка). **Без работающего контейнера RabbitMQ сервер отвечает на запросы дольше, т.к. пытается подключиться к Rabbit**;
 4. По желанию изменить строку подключения к БД в **BalanceService/UnitTestBalance/UnitTests.cs** (12 строка);
 5. Запустить приложение;
 
